@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Card from '@nuxt/ui/runtime/components/Card.vue';
 import { ref } from 'vue'
 import type { Proizvod, SlikeMap } from '~/types'
 
@@ -23,7 +24,19 @@ const increaseQuantity = (proizvod : Proizvod) => {
 </script>
 
 <template>
-  <div class="bg-[#f0f5f8] border-[#cecfd1] border-solid border-1 rounded-lg w-auto m-3 p-5 flex flex-col gap-4">
+  <CardContainer>
+    <h1 class="text-xl font-bold text-left text-[#1072ad]">
+      Korisnički podaci
+    </h1>
+    <hr class="border-[#cee0ed] border-1 rounded-full" />
+    <div class="flex flex-col text-md text-[#1072ad]">
+      <Details label="Ime" value="Marko" />
+      <Details label="Adresa" value="Veruda 32, Pula" />
+      <Details label="Telefon" value="+091-123-456" />
+    </div>
+  </CardContainer>
+
+  <CardContainer>
     <FruitCard 
       :proizvod="proizvodi[0]" 
       :slikaUrl="slike[proizvodi[0].naziv]"
@@ -45,9 +58,13 @@ const increaseQuantity = (proizvod : Proizvod) => {
       @click="increaseQuantity(proizvodi[3])"
     />
 
-    <div class="text-lg font-bold">
-      Total Cost: €{{ proizvodi.reduce((total, proizvod) => total + (proizvod.cijena * proizvod.kolicina), 0).toFixed(2) }}
+    <div class="flex flex-row gap-2 align-middle">
+      <span class="text-lg font-bold">
+        Ukupna cijena: 
+      </span>
+      <span class="text-lg">
+        €{{ proizvodi.reduce((total, proizvod) => total + (proizvod.cijena * proizvod.kolicina), 0).toFixed(2) }}
+      </span>
     </div>
-
-  </div>
+  </CardContainer>
 </template>

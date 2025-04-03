@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
+
 import type { Item } from '~/types'
 
 let items = ref<Item[]>([
@@ -12,6 +15,28 @@ let curNewName = ref<string>('');
 let curNewPrice = ref<number>(0.00);
 
 function addItem(name: string, price: number) {
+  if (name.length === 0) {
+    Toastify({
+      text: "Name cannot be empty",
+      duration: 1000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
+    }).showToast();
+    return;
+  }
+  else if (price <= 0) {
+    Toastify({
+      text: "Price must be greater than 0",
+      duration: 1000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
+    }).showToast();
+    return;
+  }
   const newItem: Item = {
     id: items.value.length,
     name: name,
@@ -19,9 +44,9 @@ function addItem(name: string, price: number) {
     price: price,
     remove: () => removeItem(items.value.length)
   };
-  
+
   items.value.push(newItem);
-  
+
   curNewName.value = '';
   curNewPrice.value = 0.00;
 }
@@ -44,9 +69,8 @@ function removeItem(id: number) {
         <h2 class="text-md font-bold self-center">
           Naziv proizvoda
         </h2>
-        <input v-model="curNewName"
-          class="p-2 bg-white text-[#9fa2ae] border-1 border-[#e9e9e9] rounded-lg self-center" type="text"
-          placeholder="Upiši naziv proizvoda..." />
+        <input v-model="curNewName" class="p-2 bg-white text-[#9fa2ae] border-1 border-[#e9e9e9] rounded-lg self-center"
+          type="text" placeholder="Upiši naziv proizvoda..." />
       </div>
       <div class="flex flex-col md:flex-row items-center justify-center gap-3 h-full">
         <h2 class="text-md font-bold self-center">

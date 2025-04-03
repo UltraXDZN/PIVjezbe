@@ -143,12 +143,11 @@ function removeItem(id: number) {
         Ukupno:
       </h2>
       <span>
-        12.92
+        {{ items.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) }}
         <span class="text-md font-bold text-center text-uppercase">
           €
         </span>
       </span>
     </div>
-
   </OuterCard>
 </template>

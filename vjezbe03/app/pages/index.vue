@@ -7,9 +7,9 @@ import type { Item } from '~/types'
 import { it } from '@nuxt/ui/runtime/locale/index.js';
 
 let items = ref<Item[]>([
-  { id: 0, name: 'Proizvod 1', quantity: 1, price: 1.00, remove: () => removeItem(0) },
-  { id: 1, name: 'Proizvod 2', quantity: 1, price: 2.00, remove: () => removeItem(1) },
-  { id: 2, name: 'Proizvod 3', quantity: 3, price: 3.00, remove: () => removeItem(2) }
+  { id: 0, name: 'Proizvod 1', quantity: 1, price: 1.00, remove: () => removeItem(0), increment: () => incrementItem(0), decrement: () => decrementItem(0) }, 
+  { id: 1, name: 'Proizvod 2', quantity: 1, price: 2.00, remove: () => removeItem(1), increment: () => incrementItem(1), decrement: () => decrementItem(1) }, 
+  { id: 2, name: 'Proizvod 3', quantity: 3, price: 3.00, remove: () => removeItem(2), increment: () => incrementItem(2), decrement: () => decrementItem(2) }, 
 ]);
 
 let curNewName = ref<string>('');
@@ -21,7 +21,9 @@ function addItem(name: string, price: number) {
     name: name,
     quantity: 1,
     price: price,
-    remove: () => removeItem(items.value.length)
+    remove: () => removeItem(items.value.length),
+    increment: () => incrementItem(items.value.length),
+    decrement: () => decrementItem(items.value.length)
   };
 
   const existingItem = items.value.find(item => item.name === newItem.name);
@@ -46,6 +48,16 @@ function addItem(name: string, price: number) {
 function removeItem(id: number) {
   items.value = items.value.filter(item => item.id !== id);
   console.log(`Item with id ${id} removed`);
+}
+
+function incrementItem(id: number) {
+  const item = items.value.find(item => item.id === id);
+  item!.quantity++;
+}
+
+function decrementItem(id: number) {
+  const item = items.value.find(item => item.id === id);
+  item!.quantity--;
 }
 
 </script>
@@ -105,13 +117,16 @@ function removeItem(id: number) {
               {{ item.name }}
             </h2>
             <div class="flex flex-row items-center justify-center gap-2 w-1/5">
-              <button class="font-bold cursor-pointer text-xl">
+              <button class="font-bold cursor-pointer text-xl disabled:text-gray-400"
+                @click="item.decrement()"
+                :disabled="item.quantity <= 1">
                 -
               </button>
               <h2 class="bg-[#f4f5f4] px-5 py-2 rounded-lg text-center border-[#e2e2e2] border-2">
                 {{ item.quantity }}
               </h2>
-              <button class="cursor-pointer text-xl font-bold">
+              <button class="cursor-pointer text-xl font-bold disabled:text-gray-400"
+                @click="item.increment()">
                 +
               </button>
             </div>

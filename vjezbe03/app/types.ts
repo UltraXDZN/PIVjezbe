@@ -4,4 +4,6 @@ export interface Item {
     price: number;
     quantity: number;
     remove(): void;
+    increment(): void;
+    decrement(): void;
 }

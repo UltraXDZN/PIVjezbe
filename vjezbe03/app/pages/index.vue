@@ -15,28 +15,6 @@ let curNewName = ref<string>('');
 let curNewPrice = ref<number>(0.00);
 
 function addItem(name: string, price: number) {
-  if (name.length === 0) {
-    Toastify({
-      text: "Name cannot be empty",
-      duration: 1000,
-      close: true,
-      gravity: "top",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
-    }).showToast();
-    return;
-  }
-  else if (price <= 0) {
-    Toastify({
-      text: "Price must be greater than 0",
-      duration: 1000,
-      close: true,
-      gravity: "top",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
-    }).showToast();
-    return;
-  }
   const newItem: Item = {
     id: items.value.length,
     name: name,
@@ -49,6 +27,15 @@ function addItem(name: string, price: number) {
 
   curNewName.value = '';
   curNewPrice.value = 0.00;
+
+  Toastify({
+      text: "Added new item",
+      duration: 1000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #4caf50, #8bc34a)"
+    }).showToast();
 }
 
 function removeItem(id: number) {
@@ -82,6 +69,7 @@ function removeItem(id: number) {
       </div>
       <button
         class="bg-[#4caf50] p-2 px-4 rounded-lg hover:bg-[#388e3c] disabled:bg-[#d6e9d1] text-black transition duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer self-center disabled:cursor-not-allowed"
+        :disabled="curNewName.length === 0 || curNewPrice <= 0"
         @click="addItem(curNewName, curNewPrice)">
         Dodaj artikl
       </button>

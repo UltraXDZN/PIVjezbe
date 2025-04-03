@@ -4,6 +4,7 @@ import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
 
 import type { Item } from '~/types'
+import { it } from '@nuxt/ui/runtime/locale/index.js';
 
 let items = ref<Item[]>([
   { id: 0, name: 'Proizvod 1', quantity: 1, price: 1.00, remove: () => removeItem(0) },
@@ -23,12 +24,12 @@ function addItem(name: string, price: number) {
     remove: () => removeItem(items.value.length)
   };
 
-  items.value.push(newItem);
-
-  curNewName.value = '';
-  curNewPrice.value = 0.00;
-
-  Toastify({
+  const existingItem = items.value.find(item => item.name === newItem.name);
+  if (existingItem) {
+    existingItem.quantity++;
+  } else {
+    items.value.push(newItem);
+    Toastify({
       text: "Added new item",
       duration: 1000,
       close: true,
@@ -36,6 +37,10 @@ function addItem(name: string, price: number) {
       position: "right",
       backgroundColor: "linear-gradient(to right, #4caf50, #8bc34a)"
     }).showToast();
+  }
+
+  curNewName.value = '';
+  curNewPrice.value = 0.00;
 }
 
 function removeItem(id: number) {
@@ -69,7 +74,7 @@ function removeItem(id: number) {
       </div>
       <button
         class="bg-[#4caf50] p-2 px-4 rounded-lg hover:bg-[#388e3c] disabled:bg-[#d6e9d1] text-black transition duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer self-center disabled:cursor-not-allowed"
-        :disabled="curNewName.length === 0 || curNewPrice <= 0"
+        :disabled="curNewName.length === 0 || (curNewPrice <= 0 && !items.some(item => item.name === curNewName))"
         @click="addItem(curNewName, curNewPrice)">
         Dodaj artikl
       </button>
@@ -131,7 +136,7 @@ function removeItem(id: number) {
         Ukupno:
       </h2>
       <span>
-        {{ items.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) }}
+        {{items.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2)}}
         <span class="text-md font-bold text-center text-uppercase">
           €
         </span>

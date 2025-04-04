@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import type { Item } from "~/types";
-
-interface CartItemListProps {
-  items: Item[];
-}
-const props = defineProps<CartItemListProps>();
+const props = defineProps<{
+  items: CartItemList;
+}>();
 const emit = defineEmits(["update:quantity", "removeItem"]);
 
 function handleQuantityUpdate(id: number, qty: number) {
-  emit("update:quantity", { id, qty });
+  let fid = props.items.findIndex((item: Item) => item.id === id);
+  const item = props.items[fid];
+  if (item) {
+    item.quantity = qty;
+  }
 }
 
 function handleRemove(id: number) {
-  emit("removeItem", id);
+  let fid = props.items.findIndex((item: Item) => item.id === id);
+  props.items.splice(fid, 1);
 }
 </script>
 
@@ -36,10 +38,7 @@ function handleRemove(id: number) {
         :class="i % 2 === 0 ? 'bg-[#f3f2f3]' : 'bg-[#ebeaeb]'"
       >
         <CartItem
-          :id="item.id"
-          :name="item.name"
-          :price="item.price"
-          :quantity="item.quantity"
+          :item="item"
           @update:quantity="(qty) => handleQuantityUpdate(item.id, qty)"
           @remove="handleRemove"
         />

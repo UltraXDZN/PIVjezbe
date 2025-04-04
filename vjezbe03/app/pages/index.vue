@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Item } from "~/types";
-
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
@@ -10,27 +8,18 @@ let items = ref<Item[]>([
     name: "Proizvod 1",
     quantity: 1,
     price: 1.0,
-    remove: () => removeItem(0),
-    increment: () => incrementItem(0),
-    decrement: () => decrementItem(0),
   },
   {
     id: 1,
     name: "Proizvod 2",
     quantity: 1,
     price: 2.0,
-    remove: () => removeItem(1),
-    increment: () => incrementItem(1),
-    decrement: () => decrementItem(1),
   },
   {
     id: 2,
     name: "Proizvod 3",
     quantity: 3,
     price: 3.0,
-    remove: () => removeItem(2),
-    increment: () => incrementItem(2),
-    decrement: () => decrementItem(2),
   },
 ]);
 
@@ -43,9 +32,6 @@ function addItem(name: string, price: number) {
     name: name,
     quantity: 1,
     price: price,
-    remove: () => removeItem(items.value.length),
-    increment: () => incrementItem(items.value.length),
-    decrement: () => decrementItem(items.value.length),
   };
 
   const existingItem = items.value.find((item) => item.name === newItem.name);
@@ -65,21 +51,6 @@ function addItem(name: string, price: number) {
 
   curNewName.value = "";
   curNewPrice.value = 0.0;
-}
-
-function removeItem(id: number) {
-  items.value = items.value.filter((item) => item.id !== id);
-  console.log(`Item with id ${id} removed`);
-}
-
-function incrementItem(id: number) {
-  const item = items.value.find((item) => item.id === id);
-  item!.quantity++;
-}
-
-function decrementItem(id: number) {
-  const item = items.value.find((item) => item.id === id);
-  item!.quantity--;
 }
 </script>
 

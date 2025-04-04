@@ -67,31 +67,11 @@ function decrementItem(id: number) {
     <h1 class="text-3xl font-bold">
       Košarica
     </h1>
-    <hr class="border-[#cee0ed] border-1 rounded-full" />
-    <div class="flex flex-col md:flex-row items-center justify-between gap-3 h-auto mx-10">
-      <div class="flex flex-col md:flex-row items-center justify-center gap-3 h-full">
-        <h2 class="text-md font-bold self-center">
-          Naziv proizvoda
-        </h2>
-        <input v-model="curNewName" class="p-2 bg-white text-[#9fa2ae] border-1 border-[#e9e9e9] rounded-lg self-center"
-          type="text" placeholder="Upiši naziv proizvoda..." />
-      </div>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-3 h-full">
-        <h2 class="text-md font-bold self-center">
-          Cijena proizvoda
-        </h2>
-        <input v-model="curNewPrice"
-          class="p-2 bg-white text-[#9fa2ae] border-1 border-[#e9e9e9] rounded-lg self-center" type="number" step="0.01"
-          placeholder="1" />
-      </div>
-      <button
-        class="bg-[#4caf50] p-2 px-4 rounded-lg hover:bg-[#388e3c] disabled:bg-[#d6e9d1] text-black transition duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer self-center disabled:cursor-not-allowed"
-        :disabled="curNewName.length === 0 || (curNewPrice <= 0 && !items.some(item => item.name === curNewName))"
-        @click="addItem(curNewName, curNewPrice)">
-        Dodaj artikl
-      </button>
-    </div>
-    <hr class="border-[#cee0ed] border-1 rounded-full" />
+    <SeparatorLine />
+    <AddItemForm
+      :items="items"
+      @addItem="addItem" />
+    <SeparatorLine />
     <div class="h-full">
       <div>
         <div class="flex flex-row justify-between items-left p-2 px-4 text-lg font-bold text-center">
@@ -122,7 +102,7 @@ function decrementItem(id: number) {
         </div>
       </div>
     </div>
-    <hr class="border-[#cee0ed] border-1 rounded-full" />
+    <SeparatorLine />
     <div class="flex flex-row gap-3">
       <h2 class="text-md font-bold text-center text-uppercase">
         Ukupno:

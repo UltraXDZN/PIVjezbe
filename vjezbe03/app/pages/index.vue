@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Item } from '~/types'
+
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
 
-import type { Item } from '~/types'
-import { it } from '@nuxt/ui/runtime/locale/index.js';
 
 let items = ref<Item[]>([
-  { id: 0, name: 'Proizvod 1', quantity: 1, price: 1.00, remove: () => removeItem(0), increment: () => incrementItem(0), decrement: () => decrementItem(0) }, 
-  { id: 1, name: 'Proizvod 2', quantity: 1, price: 2.00, remove: () => removeItem(1), increment: () => incrementItem(1), decrement: () => decrementItem(1) }, 
-  { id: 2, name: 'Proizvod 3', quantity: 3, price: 3.00, remove: () => removeItem(2), increment: () => incrementItem(2), decrement: () => decrementItem(2) }, 
+  { id: 0, name: 'Proizvod 1', quantity: 1, price: 1.00, remove: () => removeItem(0), increment: () => incrementItem(0), decrement: () => decrementItem(0) },
+  { id: 1, name: 'Proizvod 2', quantity: 1, price: 2.00, remove: () => removeItem(1), increment: () => incrementItem(1), decrement: () => decrementItem(1) },
+  { id: 2, name: 'Proizvod 3', quantity: 3, price: 3.00, remove: () => removeItem(2), increment: () => incrementItem(2), decrement: () => decrementItem(2) },
 ]);
 
 let curNewName = ref<string>('');
@@ -112,36 +112,13 @@ function decrementItem(id: number) {
       </div>
       <div class="rounded-lg overflow-hidden flex-grow">
         <div v-for="(item, i) in items" :key="i" :class="i % 2 === 0 ? 'bg-[#f3f2f3]' : 'bg-[#ebeaeb]'">
-          <div class="flex flex-row justify-between items-center p-2 px-4">
-            <h2 class="text-md font-bold text-center w-1/5">
-              {{ item.name }}
-            </h2>
-            <div class="flex flex-row items-center justify-center gap-2 w-1/5">
-              <button class="font-bold cursor-pointer text-xl disabled:text-gray-400"
-                @click="item.decrement()"
-                :disabled="item.quantity <= 1">
-                -
-              </button>
-              <h2 class="bg-[#f4f5f4] px-5 py-2 rounded-lg text-center border-[#e2e2e2] border-2">
-                {{ item.quantity }}
-              </h2>
-              <button class="cursor-pointer text-xl font-bold disabled:text-gray-400"
-                @click="item.increment()">
-                +
-              </button>
-            </div>
-            <h2 class="text-md text-center w-1/5">
-              {{ (item.price).toFixed(2) }} €
-            </h2>
-            <h2 class="text-md text-center w-1/5">
-              {{ (item.quantity * item.price).toFixed(2) }} €
-            </h2>
-            <h2
-              class="text-md text-center w-1/5 cursor-pointer hover:text-[#f44336] transition duration-300 ease-in-out"
-              @click="item.remove()">
-              Ukloni
-            </h2>
-          </div>
+          <CartItem
+            :id="item.id"
+            :name="item.name"
+            :price="item.price"
+            :quantity="item.quantity"
+            @update:quantity="qty => item.quantity = qty"
+            @remove="removeItem" />
         </div>
       </div>
     </div>

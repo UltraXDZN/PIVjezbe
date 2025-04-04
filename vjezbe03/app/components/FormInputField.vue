@@ -1,25 +1,35 @@
 <script setup lang="ts">
 defineProps<{
-    label: string;
-    modelValue: string | number;
-    placeholder?: string;
-    type?: string;
-    step?: string;
+  label: string;
+  modelValue: string | number;
+  placeholder?: string;
+  type?: string;
+  step?: string;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
-
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-<div class="flex flex-col md:flex-row items-center justify-center gap-3 h-full">
-    <h2 class="text-md font-bold self-center">
-        {{ label }}
+  <div
+    class="flex h-full flex-col items-center justify-center gap-3 md:flex-row"
+  >
+    <h2 class="text-md self-center font-bold">
+      {{ label }}
     </h2>
-    <input  v-model="modelValue"
-            class="p-2 bg-white text-[#9fa2ae] border-1 border-[#e9e9e9] rounded-lg self-center"
-            :type="type || 'text'"
-            :placeholder="placeholder"
-            @input="$event => emit('update:modelValue', ($event.target as HTMLInputElement)?.value)" />
-</div>
+    <input
+      :value="modelValue"
+      class="border-1 self-center rounded-lg border-[#e9e9e9] bg-white p-2 text-[#9fa2ae]"
+      :type="type || 'text'"
+      :placeholder="placeholder"
+      @input="
+        emit(
+          'update:modelValue',
+          type === 'number'
+            ? parseFloat(($event.target as HTMLInputElement)?.value)
+            : ($event.target as HTMLInputElement)?.value
+        )
+      "
+    />
+  </div>
 </template>

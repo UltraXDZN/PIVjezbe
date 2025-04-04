@@ -1,5 +1,7 @@
 <template>
-    <div class="bg-[#fbfbfa] border-[#eff0f2] border-solid border-1 rounded-lg w-auto m-3 p-5 flex flex-col gap-4 h-[97vh]">
-        <slot></slot>
-    </div>
+  <div
+    class="border-1 m-3 flex h-[97vh] w-auto flex-col gap-4 rounded-lg border-solid border-[#eff0f2] bg-[#fbfbfa] p-5"
+  >
+    <slot></slot>
+  </div>
 </template>

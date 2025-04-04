@@ -1,34 +1,29 @@
 <script setup lang="ts">
-interface CartItemProps {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-const props = defineProps<CartItemProps>();
+const props = defineProps<{
+  item: Item;
+}>();
 const emit = defineEmits(["update:quantity", "remove"]);
-const total = computed(() => props.price * props.quantity);
+const total = computed(() => props.item.price * props.item.quantity);
 
 function increaseQuantity() {
-  emit("update:quantity", props.quantity + 1);
+  emit("update:quantity", props.item.quantity + 1);
 }
 
 function decreaseQuantity() {
-  if (props.quantity > 1) {
-    emit("update:quantity", props.quantity - 1);
+  if (props.item.quantity > 1) {
+    emit("update:quantity", props.item.quantity - 1);
   }
 }
 
 function removeItem() {
-  emit("remove", props.id);
+  emit("remove", props.item.id);
 }
 </script>
 
 <template>
   <div class="flex flex-row items-center justify-between p-2 px-4">
     <h2 class="text-md w-1/5 text-center font-bold">
-      {{ name }}
+      {{ item.name }}
     </h2>
     <div class="flex w-1/5 flex-row items-center justify-center gap-2">
       <button
@@ -40,7 +35,7 @@ function removeItem() {
       <h2
         class="rounded-lg border-2 border-[#e2e2e2] bg-[#f4f5f4] px-5 py-2 text-center"
       >
-        {{ quantity }}
+        {{ item.quantity }}
       </h2>
       <button
         class="cursor-pointer text-xl font-bold"
@@ -49,7 +44,7 @@ function removeItem() {
         +
       </button>
     </div>
-    <h2 class="text-md w-1/5 text-center">{{ price.toFixed(2) }} €</h2>
+    <h2 class="text-md w-1/5 text-center">{{ item.price.toFixed(2) }} €</h2>
     <h2 class="text-md w-1/5 text-center">{{ total.toFixed(2) }} €</h2>
     <h2
       class="text-md w-1/5 cursor-pointer text-center transition duration-300 ease-in-out hover:text-[#f44336]"

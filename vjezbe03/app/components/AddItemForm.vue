@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import type { Item } from "~/types";
-
-interface AddItemFormProps {
+const props = defineProps<{
   items: Item[];
-}
-
-const props = defineProps<AddItemFormProps>();
+}>();
 const emit = defineEmits(["addItem"]);
 
 const productName = ref<string>("");
